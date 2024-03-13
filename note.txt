@@ -1,0 +1,1 @@
+npx sequelize-cli model:generate --name Anime --attributes title:string,imgUrl:string,episode:integer,rating:string,score:integer,synopsis:string,genre:string,trailer:string

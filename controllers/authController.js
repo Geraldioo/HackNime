@@ -5,10 +5,10 @@ const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client();
 
 class ControllerAuth {
-  static async addUser(req, res, next) {
+  static async register(req, res, next) {
     try {
-      //   const user = await User.create(req.body);
-      //   res.status(201).json({ message: "User created", user });
+        const user = await User.create(req.body);
+        res.status(201).json({ message: "User created", user });
     } catch (error) {
       console.log(error);
       next(error);
@@ -55,7 +55,7 @@ class ControllerAuth {
       });
       const payload = { id: user.id };
       const token = signToken(payload);
-      res.status(200).json({ message: "Success Login", token });
+      res.status(200).json({ message: `Success Logged in as ${email}`, token });
     } catch (error) {
       console.log(error);
       next(error);
