@@ -1,7 +1,6 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
+const { comparePassword } = require("../helpers/bcrypt");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -13,56 +12,62 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  User.init({
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: "Username Can't be empty",
+  User.init(
+    {
+      username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Username Can't be empty",
+          },
+          notEmpty: {
+            msg: "Username Can't be empty",
+          },
         },
-        notEmpty: {
-          msg: "Username Can't be empty",
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: {
+          msg: "Email Already Exist",
         },
+        validate: {
+          notNull: {
+            msg: "Email Can't be empty",
+          },
+          notEmpty: {
+            msg: "Email Can't be empty",
+          },
+          isEmail: {
+            msg: "Email Must Be Email Format",
+          },
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Password Can't be empty",
+          },
+          notEmpty: {
+            msg: "Password Can't be empty",
+          },
+        },
+      },
+      status: {
+        type: DataTypes.STRING,
+        defaultValue: "Free",
       },
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: {
-        msg: "Email Already Exist",
-      },
-      validate: {
-        notNull: {
-          msg: "Email Can't be empty",
-        },
-        notEmpty: {
-          msg: "Email Can't be empty",
-        },
-        isEmail: {
-          msg: "Email Must Be Email Format",
-        },
-      },
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: "Password Can't be empty",
-        },
-        notEmpty: {
-          msg: "Password Can't be empty",
-        },
-      },
-    },
-    status: {
-      type: DataTypes.STRING,
-      defaultValue: "Not Premium"
+    {
+      sequelize,
+      modelName: "User",
     }
-  }, {
-    sequelize,
-    modelName: 'User',
+  );
+  User.beforeCreate((user) => {
+    user.password = comparePassword(user.password);
   });
   return User;
 };

@@ -5,6 +5,7 @@ const { errHandler } = require("../middlewares/errHandler");
 const route = express.Router();
 
 route.post("/login", ControllerAuth.login);
+route.post("/google-login", ControllerAuth.googleLogin);
 
 route.use(authentication);
 
