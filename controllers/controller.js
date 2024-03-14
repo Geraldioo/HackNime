@@ -158,6 +158,40 @@ class Controller {
       next(error);
     }
   }
+
+  static async deleteFav(req, res, next) {
+    try {
+      const { animeId } = req.params;
+
+      const findFav = await Favorite.findByPk(animeId);
+      if (!findFav) {
+        throw {
+          name: "NotFoundId",
+          animeId,
+        };
+      }
+
+      await findFav.destroy();
+
+      res
+        .status(200)
+        .json({ message: `Successfully Removed From My Favorite` });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+
+  static async getScore(req, res, next) {
+    try {
+      // console.log(Type, "!<!<!<!<");
+      const score = await Score.findAll();
+      res.status(200).json(score);
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
 }
 
 module.exports = Controller;
