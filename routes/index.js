@@ -16,10 +16,11 @@ route.get("/anime", Controller.getAnime);
 
 // route.post("/subscription/:userId, Controller)
 
-route.get("/favorite", Controller.getFav)
-route.post("/favorite/:animeId", Controller.addFav)
-// route.patch("/favorite/:animeId/complete", Controller)
-// route.patch("/favorite/:animeId", Controller)
+route.get("/favorite", Controller.getFav);
+route.get("/score", Controller.getFav);
+route.post("/favorite/:animeId", Controller.addFav);
+route.patch("/favorite/:animeId/complete", Controller.editStatus);
+route.patch("/favorite/:animeId", Controller.editScore)
 // route.delete("/favorite/:animeId", Controller)
 
 route.use(errHandler);

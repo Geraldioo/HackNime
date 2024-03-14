@@ -1,4 +1,4 @@
-const { User, Favorite, Anime } = require("../models/index");
+const { User, Favorite, Anime, Score } = require("../models/index");
 
 class Controller {
   static async getAnime(req, res, next) {
@@ -98,7 +98,7 @@ class Controller {
       });
 
       if (dataFav) {
-        throw {name: "AnimeAdded" }
+        throw { name: "AnimeAdded" };
       }
 
       const newFav = await Favorite.create({
@@ -114,12 +114,48 @@ class Controller {
     }
   }
 
-  static async gettt (req, res, next){
+  static async editStatus(req, res, next) {
     try {
-        
+      const { animeId } = req.params;
+      const anime = await Anime.findByPk(animeId);
+
+      if (anime.status === "Complete") {
+        throw { name: "StatusFix" };
+      }
+      const updated = await anime.update({
+        status: "Complete",
+      });
+      res.status(200).json(updated);
     } catch (error) {
-        console.log(error);
-        next(error)
+      console.log(error);
+      next(error);
+    }
+  }
+
+  static async editScore(req, res, next) {
+    try {
+      const { ScoreId } = req.body;
+      const { animeId } = req.params;
+
+      const anime = await Anime.findByPk(animeId);
+      const score = await Score.findByPk(ScoreId);
+
+      if (!anime) {
+        throw { name: "NotFound" };
+      }
+
+      if (!score) {
+        throw { name: "NotFound" };
+      }
+
+      const updated = await anime.update({
+        ScoreId,
+      });
+
+      res.status(200).json(updated);
+    } catch (error) {
+      console.log(error);
+      next(error);
     }
   }
 }
