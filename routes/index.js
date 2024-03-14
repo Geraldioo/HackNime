@@ -11,7 +11,9 @@ route.post("/google-login", ControllerAuth.googleLogin);
 
 route.use(authentication);
 
-route.post("/favorite/:animeId", Controller)
+// route.get("/anime", Controller)
+// route.post("/favorite/:animeId", Controller)
+// route.delete("/favorite/:animeId", Controller)
 
 route.use(errHandler);
 

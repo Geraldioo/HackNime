@@ -1,1 +1,12 @@
-npx sequelize-cli model:generate --name Anime --attributes title:string,imgUrl:string,episode:integer,rating:string,score:integer,synopsis:string,genre:string,trailer:string
+npx sequelize-cli model:generate --name Anime --attributes title:string,imgUrl:string,episode:integer,watchEps:integer,rating:string,score:integer,synopsis:string,genre:string,trailer:string,status:string,type:string
+npx sequelize-cli model:generate --name Score --attributes name:string
+
+
+20240313224646-create-score.js
+
+20240313222438-create-anime.js
+
+20240313073244-create-favorite.js
+
+20240313230225-seeding_score.js
+20240313075540-seeding_favorite.js
