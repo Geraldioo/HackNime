@@ -4,7 +4,7 @@ class Controller {
   static async getAnime(req, res, next) {
     try {
       let { sort, search, page, filterBy } = req.query;
-      let option = { order: [["id", "ASC"]]};
+      let option = { order: [["id", "ASC"]] };
 
       if (search) {
         option.where = {
@@ -58,6 +58,68 @@ class Controller {
     } catch (error) {
       console.log(error);
       next(error);
+    }
+  }
+
+  static async getFav(req, res, next) {
+    try {
+      const { id } = req.user;
+      const favorite = await Favorite.findAll({
+        where: {
+          UserId: id,
+        },
+        include: {
+          model: Anime,
+        },
+      });
+
+      res.status(200).json(favorite);
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+
+  static async addFav(req, res, next) {
+    try {
+      const { id } = req.user;
+      const { animeId } = req.params;
+
+      const findData = await Anime.findByPk(animeId);
+      if (!findData) {
+        throw { name: "NotFound" };
+      }
+
+      const dataFav = await Favorite.findOne({
+        where: {
+          UserId: id,
+          AnimeId: animeId,
+        },
+      });
+
+      if (dataFav) {
+        throw {name: "AnimeAdded" }
+      }
+
+      const newFav = await Favorite.create({
+        UserId: id,
+        AnimeId: animeId,
+      });
+
+      //   console.log(newFav, ">>>>>>>>");
+      res.status(201).json(`${findData.title} Added to Favorites`);
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+
+  static async gettt (req, res, next){
+    try {
+        
+    } catch (error) {
+        console.log(error);
+        next(error)
     }
   }
 }

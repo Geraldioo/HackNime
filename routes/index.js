@@ -16,8 +16,8 @@ route.get("/anime", Controller.getAnime);
 
 // route.post("/subscription/:userId, Controller)
 
-// route.get("/favorite ", Controller)
-// route.post("/favorite/:animeId", Controller)
+route.get("/favorite", Controller.getFav)
+route.post("/favorite/:animeId", Controller.addFav)
 // route.patch("/favorite/:animeId/complete", Controller)
 // route.patch("/favorite/:animeId", Controller)
 // route.delete("/favorite/:animeId", Controller)

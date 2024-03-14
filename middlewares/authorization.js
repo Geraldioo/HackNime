@@ -1,6 +1,6 @@
 const authorization = async (req, res, next) => {
   try {
-    console.log(req.user, "<<<");
+    // console.log(req.user, "<<<");
     if (req.user.status === "Premium") {
       next();
     } else {
