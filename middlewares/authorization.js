@@ -1,8 +1,11 @@
-
 const authorization = async (req, res, next) => {
   try {
-    if (req.user.role === "Premium") throw { name: "Forbidden" };
-    next();
+    console.log(req.user, "<<<");
+    if (req.user.status === "Premium") {
+      next();
+    } else {
+      throw { name: "Forbidden" };
+    }
   } catch (error) {
     console.log(error);
     next(error);

@@ -10,3 +10,29 @@ npx sequelize-cli model:generate --name Score --attributes name:string
 
 20240313230225-seeding_score.js
 20240313075540-seeding_favorite.js
+
+
+org.jkiss.dbeaver.model.exec.DBCException: Array type varchar doesn't have a component type
+	at org.jkiss.dbeaver.ext.postgresql.model.data.PostgreArrayValueHandler.getValueFromObject(PostgreArrayValueHandler.java:74)
+	at org.jkiss.dbeaver.ext.postgresql.model.data.PostgreArrayValueHandler.getValueFromObject(PostgreArrayValueHandler.java:1)
+	at org.jkiss.dbeaver.model.impl.jdbc.data.handlers.JDBCComplexValueHandler.fetchColumnValue(JDBCComplexValueHandler.java:50)
+	at org.jkiss.dbeaver.model.impl.jdbc.data.handlers.JDBCArrayValueHandler.fetchColumnValue(JDBCArrayValueHandler.java:60)
+	at org.jkiss.dbeaver.ext.postgresql.model.data.PostgreArrayValueHandler.fetchColumnValue(PostgreArrayValueHandler.java:56)
+	at org.jkiss.dbeaver.model.impl.jdbc.data.handlers.JDBCAbstractValueHandler.fetchValueObject(JDBCAbstractValueHandler.java:49)
+	at org.jkiss.dbeaver.ui.controls.resultset.ResultSetDataReceiver.fetchRow(ResultSetDataReceiver.java:126)
+	at org.jkiss.dbeaver.model.impl.jdbc.struct.JDBCTable.readData(JDBCTable.java:199)
+	at org.jkiss.dbeaver.ui.controls.resultset.ResultSetJobDataRead.lambda$0(ResultSetJobDataRead.java:123)
+	at org.jkiss.dbeaver.model.exec.DBExecUtils.tryExecuteRecover(DBExecUtils.java:190)
+	at org.jkiss.dbeaver.ui.controls.resultset.ResultSetJobDataRead.run(ResultSetJobDataRead.java:121)
+	at org.jkiss.dbeaver.ui.controls.resultset.ResultSetViewer$ResultSetDataPumpJob.run(ResultSetViewer.java:5148)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:114)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+
+1 https://www.youtube.com/watch?v=OhNwckCLzis
+2 https://www.youtube.com/watch?v=dgmJ_Bx9Sgc
+3 https://www.youtube.com/watch?v=mVuJ5AlaZdg
+5 https://www.youtube.com/watch?v=sNW-zMNuRtQ
+6 https://www.youtube.com/watch?v=4JFJ42o6kS8
+8 https://www.youtube.com/watch?v=CkevHS3avyE
+9 https://www.youtube.com/watch?v=ymKNoTN3kZk

@@ -1,8 +1,9 @@
 const express = require("express");
 const ControllerAuth = require("../controllers/authController");
+const Controller = require("../controllers/controller");
 const { authentication } = require("../middlewares/authentication");
 const { errHandler } = require("../middlewares/errHandler");
-const { default: Controller } = require("../controllers/controller");
+const { authorization } = require("../middlewares/authorization");
 const route = express.Router();
 
 route.post("/register", ControllerAuth.register);
@@ -11,8 +12,14 @@ route.post("/google-login", ControllerAuth.googleLogin);
 
 route.use(authentication);
 
-// route.get("/anime", Controller)
+route.get("/anime", Controller.getAnime);
+
+// route.post("/subscription/:userId, Controller)
+
+// route.get("/favorite ", Controller)
 // route.post("/favorite/:animeId", Controller)
+// route.patch("/favorite/:animeId/complete", Controller)
+// route.patch("/favorite/:animeId", Controller)
 // route.delete("/favorite/:animeId", Controller)
 
 route.use(errHandler);
