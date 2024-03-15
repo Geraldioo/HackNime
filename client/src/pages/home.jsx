@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Card from "../components/card";
 import axios from "axios";
 import BASE_URL from "../constant";
+import Navbar from "../components/navbar";
 
 const HomePage = () => {
   const [anime, setAnime] = useState(null);
@@ -62,7 +63,6 @@ const HomePage = () => {
   }, [param]);
   return (
     <>
-      <>
         <div className="relative mt-6 max-w-lg mx-auto">
           <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
             <svg
@@ -141,7 +141,6 @@ const HomePage = () => {
           </div>
         </footer>
       </>
-    </>
   );
 };
 

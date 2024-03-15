@@ -9,10 +9,11 @@ import LoginPage from "./pages/loginPage";
 import Register from "./pages/register";
 import HomePage from "./pages/home";
 import DetailPage from "./pages/detail";
+import MainLayout from "./components/mainLayout";
 
 const router = createBrowserRouter([
   {
-    // element: <MainLayout />,
+    element: <MainLayout />,
     loader: () => {
       if (localStorage.access_token) {
         return null;
@@ -27,6 +28,15 @@ const router = createBrowserRouter([
     ],
   },
   {
+    element: <MainLayout />,
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
+    ],
+  },
+  {
     path: "/login",
     element: <LoginPage />,
     loader: () => {
@@ -35,10 +45,6 @@ const router = createBrowserRouter([
       }
       return null;
     },
-  },
-  {
-    path: "/",
-    element: <HomePage />,
   },
   {
     path: "/register",

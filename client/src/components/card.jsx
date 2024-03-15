@@ -5,9 +5,9 @@ const Card = ( { Anime } ) => {
   return (
     <>
     <Link to={`anime/${Anime.id}`}>
-      <div className=" max-w-52 mx-auto rounded-3xl shadow-xl overflow-hidden bg-slate-700">
+      <div className=" max-w-52 mx-auto rounded-3xl shadow-xl overflow-hidden bg-slate-700 hover:bg-slate-500">
         <div
-          className="flex items-end justify-end h-72  bg-cover"
+          className="flex items-end justify-end h-64 bg-cover"
         >
             <img className="bg-cover" src={Anime.imgUrl} alt="pict" />
         </div>

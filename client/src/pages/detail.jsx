@@ -74,7 +74,7 @@ function DetailPage() {
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
             <img
               alt="pict"
-              className="lg:w-1/2 w-full object-cover object-center rounded border border-gray-200"
+              className="lg:w-2/5 w-full object-cover object-center rounded border border-gray-200"
               src={anime.imgUrl}
             />
             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
