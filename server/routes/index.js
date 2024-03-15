@@ -10,9 +10,10 @@ route.post("/register", ControllerAuth.register);
 route.post("/login", ControllerAuth.login);
 route.post("/google-login", ControllerAuth.googleLogin);
 
+route.get("/anime", Controller.getAnime);
+
 route.use(authentication);
 
-route.get("/anime", Controller.getAnime);
 route.get("/anime/:id", Controller.getAnimeById);
 
 route.get("/payment", Controller.paymentMidtrans);

@@ -7,6 +7,9 @@ const route = require("./routes");
 const app = express();
 const port = process.env.PORT;
 
+const cors = require('cors')
+app.use(cors())
+
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

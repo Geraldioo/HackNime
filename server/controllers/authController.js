@@ -37,25 +37,30 @@ class ControllerAuth {
   }
 
   static async googleLogin(req, res, next) {
-    const { googleToken } = req.body;
     try {
+      const { googleToken } = req.body;
+      console.log(
+        googleToken ,"<<<<< TOKENNNNNNN"
+      );
       const ticket = await client.verifyIdToken({
         idToken: googleToken,
         audience:
           "69395850274-8h7op1snhdk96ebh6l9r9np01v31lp7v.apps.googleusercontent.com",
       });
+      console.log(ticket, "<<<>>>> TIKET");
       const { email, name } = ticket.getPayload();
       const [user, created] = await User.findOrCreate({
         where: { email },
         defaults: {
           username: name,
-          email,
+          email,   
           password: Math.random().toString(),
         },
       });
+      console.log(user, created, "<<<< INI DI SERVER");
       const payload = { id: user.id };
       const token = signToken(payload);
-      res.status(200).json({ message: `Success Logged in as ${email}`, token });
+      res.status(200).json({ message: `Success Logged in as ${email}`, token, name });
     } catch (error) {
       console.log(error);
       next(error);

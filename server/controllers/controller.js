@@ -251,20 +251,17 @@ class Controller {
       const transaction = await snap.createTransaction(parameter);
       let transactionToken = transaction.token;
 
-      const mailOptions = {
-        from: "HackNime@gmail.com",
-        to: req.user.email,
-        subject: "Payment Notification",
-        text: `Dear ${req.user.username},\n\nYour payment has been successfully processed. Thank you for your purchase!`,
-      };
+      async function main() {
+        const mailOptions =await transporter.sendMail({
+          from: "HackNime@gmail.com",
+          to: req.user.email,
+          subject: "Payment Notification",
+          text: `Dear ${req.user.username},\n\nYour payment has been successfully processed. Thank you for your purchase!\n\nEnjoy Your Premium HackNime Account !! 🤩😘😍`,
+        });
+        console.log("Message sent: %s", mailOptions.messageId);
+      }
 
-      await transporter.sendMail(mailOptions, (err, info) => {
-        if (err) {
-          console.error("Error sending email:", err);
-        } else {
-          console.log("Email sent:", info.response);
-        }
-      });
+      main().catch(console.error);
 
       await Order.create({
         OrderId,
