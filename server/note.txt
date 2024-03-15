@@ -36,3 +36,7 @@ org.jkiss.dbeaver.model.exec.DBCException: Array type varchar doesn't have a com
 6 https://www.youtube.com/watch?v=4JFJ42o6kS8
 8 https://www.youtube.com/watch?v=CkevHS3avyE
 9 https://www.youtube.com/watch?v=ymKNoTN3kZk
+
+
+
+npx sequelize-cli model:generate --name Order --attributes UserId:integer,OrderId:string,amount:integer,paidDate:date,status:string

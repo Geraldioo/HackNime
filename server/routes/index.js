@@ -13,15 +13,17 @@ route.post("/google-login", ControllerAuth.googleLogin);
 route.use(authentication);
 
 route.get("/anime", Controller.getAnime);
+route.get("/anime/:id", Controller.getAnimeById);
 
-// route.post("/subscription/:userId, Controller)
+route.get("/payment", Controller.paymentMidtrans);
+route.patch("/upgrade", Controller.upgradeAccount);
 
 route.get("/score", Controller.getScore);
 route.get("/favorite", Controller.getFav);
-route.post("/favorite/:animeId", Controller.addFav);
+route.post("/favorite/:animeId", authorization, Controller.addFav);
 route.patch("/favorite/:animeId/complete", Controller.editStatus);
-route.patch("/favorite/:animeId", Controller.editScore)
-route.delete("/favorite/:animeId", Controller.deleteFav)
+route.patch("/favorite/:animeId", Controller.editScore);
+route.delete("/favorite/:animeId", Controller.deleteFav);
 
 route.use(errHandler);
 

@@ -26,6 +26,9 @@ const errHandler = (err, req, res, next) => {
     case "NotFound":
       res.status(404).json({ message: "Error Data Not Found" });
       break;
+    case "OrderNotFound":
+      res.status(404).json({ message: "Error Order Not Found" });
+      break;
     case "NotFoundId":
       res
         .status(404)

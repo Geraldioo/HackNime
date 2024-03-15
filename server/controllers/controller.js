@@ -1,4 +1,7 @@
-const { User, Favorite, Anime, Score } = require("../models/index");
+const { User, Favorite, Anime, Score, Order } = require("../models/index");
+const midtransClient = require("midtrans-client");
+const axios = require("axios");
+const nodemailer = require("nodemailer");
 
 class Controller {
   static async getAnime(req, res, next) {
@@ -57,6 +60,26 @@ class Controller {
       });
     } catch (error) {
       console.log(error);
+      next(error);
+    }
+  }
+
+  static async getAnimeById(req, res, next) {
+    try {
+      const { id } = req.params;
+      const anime = await Anime.findOne({
+        where: {
+          id: id,
+        },
+      });
+      // console.log(lodging, "!!!!");
+      if (!anime) {
+        throw { name: "NotFound" };
+      } else {
+        res.status(200).json(anime);
+      }
+    } catch (error) {
+      console.log(error.message);
       next(error);
     }
   }
@@ -187,6 +210,119 @@ class Controller {
       // console.log(Type, "!<!<!<!<");
       const score = await Score.findAll();
       res.status(200).json(score);
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+
+  static async paymentMidtrans(req, res, next) {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.NODEMAILER_EMAIL,
+        pass: process.env.NODEMAILER_PW,
+      },
+    });
+
+    try {
+      let snap = new midtransClient.Snap({
+        isProduction: false,
+        serverKey: process.env.SERVER_KEY_MIDTRANS,
+      });
+
+      let OrderId = Math.random().toString();
+      let amount = 100_000;
+
+      let parameter = {
+        transaction_details: {
+          order_id: OrderId,
+          gross_amount: amount,
+        },
+        credit_card: {
+          secure: true,
+        },
+        customer_details: {
+          first_name: req.user.username,
+          email: req.user.email,
+        },
+      };
+
+      const transaction = await snap.createTransaction(parameter);
+      let transactionToken = transaction.token;
+
+      const mailOptions = {
+        from: "HackNime@gmail.com",
+        to: req.user.email,
+        subject: "Payment Notification",
+        text: `Dear ${req.user.username},\n\nYour payment has been successfully processed. Thank you for your purchase!`,
+      };
+
+      await transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.error("Error sending email:", err);
+        } else {
+          console.log("Email sent:", info.response);
+        }
+      });
+
+      await Order.create({
+        OrderId,
+        amount,
+        UserId: req.user.id,
+      });
+
+      res
+        .status(200)
+        .json({ message: "Order Created", transactionToken, OrderId });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+
+  static async upgradeAccount(req, res, next) {
+    try {
+      const { OrderId } = req.body;
+
+      const order = await Order.findOne({
+        where: {
+          OrderId,
+        },
+      });
+
+      if (!order) throw { name: "OrderNotFound" };
+
+      if (req.user.status === "Premium") {
+        return res.status(400).json({ message: "You Are Already Premium" });
+      }
+
+      if (order.status === "Paid") {
+        return res.status(400).json({ message: "Order Already Paid" });
+      }
+
+      const serverKey = process.env.SERVER_KEY_MIDTRANS;
+      const base64ServerKey = Buffer.from(serverKey + ":").toString("base64");
+      const { data } = await axios.get(
+        `https://api.sandbox.midtrans.com/v2/${OrderId}/status`,
+        {
+          headers: {
+            Authorization: `Basic ${base64ServerKey}`,
+          },
+        }
+      );
+      if (
+        data.transaction_status === "settlement" &&
+        data.status_code === "200"
+      ) {
+        await req.user.update({ status: "Premium" });
+        await order.update({ status: "Paid", paidDate: new Date() });
+        res.status(200).json({ message: "Upgrade Success" });
+      } else {
+        res
+          .status(400)
+          .json({ message: "Upgrade Failed, Please Contact Admin" });
+      }
     } catch (error) {
       console.log(error);
       next(error);
