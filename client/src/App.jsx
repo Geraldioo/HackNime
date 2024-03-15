@@ -1,34 +1,30 @@
-import { useState } from 'react'
+import { useState } from "react";
 // import './App.css'
 import {
   RouterProvider,
   createBrowserRouter,
   redirect,
-} from "react-router-dom"
-import LoginPage from './pages/loginPage';
-import Register from './pages/register';
-import HomePage from './pages/home';
-import DetailPage from './pages/detail';
+} from "react-router-dom";
+import LoginPage from "./pages/loginPage";
+import Register from "./pages/register";
+import HomePage from "./pages/home";
+import DetailPage from "./pages/detail";
 
 const router = createBrowserRouter([
   {
     // element: <MainLayout />,
     loader: () => {
       if (localStorage.access_token) {
-        return null
+        return null;
       }
       return redirect("/login");
     },
     children: [
-        {
-          path: "/",
-          element: <HomePage />
-        },
-        {
-          path: "/anime/:id",
-          element: <DetailPage />
-        }
-    ]
+      {
+        path: "/anime/:id",
+        element: <DetailPage />,
+      },
+    ],
   },
   {
     path: "/login",
@@ -41,17 +37,21 @@ const router = createBrowserRouter([
     },
   },
   {
+    path: "/",
+    element: <HomePage />,
+  },
+  {
     path: "/register",
     element: <Register />,
-  }
-])
+  },
+]);
 
 function App() {
   return (
     <>
-       <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
