@@ -11,6 +11,7 @@ import HomePage from "./pages/home";
 import DetailPage from "./pages/detail";
 import MainLayout from "./components/mainLayout";
 import Favorite from "./pages/favorit";
+import EditPage from "./pages/editFav";
 
 const router = createBrowserRouter([
   {
@@ -28,8 +29,12 @@ const router = createBrowserRouter([
       },
       {
         path: "/favorite",
-        element: <Favorite />
-      }
+        element: <Favorite />,
+      },
+      {
+        path: "edit-fav/:id",
+        element: <EditPage />
+      },
     ],
   },
   {
@@ -60,7 +65,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-        <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </>
   );
 }

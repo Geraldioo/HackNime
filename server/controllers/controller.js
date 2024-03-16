@@ -2,33 +2,20 @@ const { User, Favorite, Anime, Score, Order } = require("../models/index");
 const midtransClient = require("midtrans-client");
 const axios = require("axios");
 const nodemailer = require("nodemailer");
+const { Op } = require("sequelize");
 
 class Controller {
   static async getAnime(req, res, next) {
     try {
-      let { sort, search, page, filterBy } = req.query;
+      let { search, page, } = req.query;
       let option = { order: [["id", "ASC"]] };
 
       if (search) {
         option.where = {
-          name: {
+          title: {
             [Op.iLike]: `%${search}%`,
           },
         };
-      }
-
-      if (filterBy) {
-        option.where = {
-          type: {
-            [Op.eq]: filterBy,
-          },
-        };
-      }
-
-      if (sort) {
-        const ordering = sort[0] === "-" ? "DESC" : "ASC";
-        const columnName = ordering === "DESC" ? sort.slice(1) : sort;
-        option.order = [[columnName, ordering]];
       }
 
       // console.log(req.query, "<<<");
@@ -67,17 +54,24 @@ class Controller {
   static async getAnimeById(req, res, next) {
     try {
       const { id } = req.params;
+      // console.log(id, "<<<<");
       const anime = await Anime.findOne({
         where: {
           id: id,
         },
+        include: {
+          model: Score
+        }
       });
-      // console.log(lodging, "!!!!");
+      // console.log(anime , "!!!!");
+      if (!id) {
+        throw { name: "NotFound" };
+      }
       if (!anime) {
         throw { name: "NotFound" };
-      } else {
-        res.status(200).json(anime);
       }
+
+      res.status(200).json(anime);
     } catch (error) {
       console.log(error.message);
       next(error);
@@ -93,6 +87,9 @@ class Controller {
         },
         include: {
           model: Anime,
+          include: {
+            model: Score
+          }
         },
       });
 
@@ -137,27 +134,9 @@ class Controller {
     }
   }
 
-  static async editStatus(req, res, next) {
+  static async editFav(req, res, next) {
     try {
-      const { animeId } = req.params;
-      const anime = await Anime.findByPk(animeId);
-
-      if (anime.status === "Complete") {
-        throw { name: "StatusFix" };
-      }
-      const updated = await anime.update({
-        status: "Complete",
-      });
-      res.status(200).json(updated);
-    } catch (error) {
-      console.log(error);
-      next(error);
-    }
-  }
-
-  static async editScore(req, res, next) {
-    try {
-      const { ScoreId } = req.body;
+      const { ScoreId, status } = req.body;
       const { animeId } = req.params;
 
       const anime = await Anime.findByPk(animeId);
@@ -171,8 +150,13 @@ class Controller {
         throw { name: "NotFound" };
       }
 
+      // if (anime.status === "Complete") {
+      //   throw { name: "StatusFix" };
+      // }
+
       const updated = await anime.update({
         ScoreId,
+        status
       });
 
       res.status(200).json(updated);
@@ -217,14 +201,6 @@ class Controller {
   }
 
   static async paymentMidtrans(req, res, next) {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.NODEMAILER_EMAIL,
-        pass: process.env.NODEMAILER_PW,
-      },
-    });
-
     try {
       let snap = new midtransClient.Snap({
         isProduction: false,
@@ -251,17 +227,7 @@ class Controller {
       const transaction = await snap.createTransaction(parameter);
       let transactionToken = transaction.token;
 
-      async function main() {
-        const mailOptions =await transporter.sendMail({
-          from: "HackNime@gmail.com",
-          to: req.user.email,
-          subject: "Payment Notification",
-          text: `Dear ${req.user.username},\n\nYour payment has been successfully processed. Thank you for your purchase!\n\nEnjoy Your Premium HackNime Account !! 🤩😘😍`,
-        });
-        console.log("Message sent: %s", mailOptions.messageId);
-      }
 
-      main().catch(console.error);
 
       await Order.create({
         OrderId,
@@ -279,6 +245,14 @@ class Controller {
   }
 
   static async upgradeAccount(req, res, next) {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.NODEMAILER_EMAIL,
+        pass: process.env.NODEMAILER_PW,
+      },
+    });
+
     try {
       const { OrderId } = req.body;
 
@@ -308,12 +282,26 @@ class Controller {
           },
         }
       );
+      // console.log(data, '<<< MIDTRANS');
       if (
-        data.transaction_status === "settlement" &&
+        data.transaction_status === "capture" &&
         data.status_code === "200"
       ) {
         await req.user.update({ status: "Premium" });
         await order.update({ status: "Paid", paidDate: new Date() });
+
+        async function main() {
+          const mailOptions = await transporter.sendMail({
+            from: "HackNime@gmail.com",
+            to: req.user.email,
+            subject: "Payment Notification",
+            text: `Dear ${req.user.username},\n\nYour payment has been successfully processed. Thank you for your purchase!\n\nEnjoy Your Premium HackNime Account !! 🤩😘😍`,
+          });
+          console.log("Message sent: %s", mailOptions.messageId);
+        }
+  
+        main().catch(console.error);
+
         res.status(200).json({ message: "Upgrade Success" });
       } else {
         res

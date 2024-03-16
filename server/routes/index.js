@@ -21,9 +21,10 @@ route.patch("/upgrade", Controller.upgradeAccount);
 
 route.get("/score", Controller.getScore);
 route.get("/favorite", Controller.getFav);
-route.post("/favorite/:animeId", authorization, Controller.addFav);
-route.patch("/favorite/:animeId/complete", Controller.editStatus);
-route.patch("/favorite/:animeId", Controller.editScore);
+
+route.use(authorization)
+route.post("/favorite/:animeId", Controller.addFav);
+route.put("/favorite/:animeId", Controller.editFav);
 route.delete("/favorite/:animeId", Controller.deleteFav);
 
 route.use(errHandler);

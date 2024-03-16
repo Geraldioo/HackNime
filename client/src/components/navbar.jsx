@@ -1,12 +1,40 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import axios from "axios";
+import BASE_URL from "../constant";
 const Navbar = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleUpgrade = async () => {
+    const { data } = await axios({
+      method: "GET",
+      url: `${BASE_URL}/payment`,
+      headers: {
+        Authorization: "Bearer " + localStorage.access_token,
+      },
+    });
+    window.snap.pay(data.transactionToken, {
+      onSuccess: async function (result) {
+        /* You may add your own implementation here */
+        console.log(result);
+        await axios({
+          method: "PATCH",
+          url: `${BASE_URL}/upgrade`,
+          headers: {
+            Authorization: "Bearer " + localStorage.access_token,
+          },
+          data: {
+            OrderId: data.OrderId,
+          },
+        });
+      },
+    });
   };
 
   const handleLogout = (event) => {
@@ -56,7 +84,7 @@ const Navbar = () => {
                   <img
                     src="/hck-logo.png"
                     alt="logo"
-                    className="py-1 px-4 lg:-ml-2 w-32" 
+                    className="py-1 px-4 lg:-ml-2 w-32"
                   />
                 </li>
                 <li>
@@ -67,12 +95,19 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to={"/favorite"}>
-                    <button className="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2">
-                      My Favorite
-                      <span className="text-red-600 fw-bold"> *</span>
-                    </button>
-                  </Link>
+                  {localStorage.status === "Premium" ? (
+                    <Link to={"/favorite"}>
+                      <button className="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2">
+                        My Favorite
+                        <span className="text-red-600 fw-bold"> *</span>
+                      </button>
+                    </Link>
+                  ) : (
+                      <h1 hidden className="inline-block no-underline text-red-600 hover:text-white font-medium text-sm py-2 px-4 lg:-ml-2">
+                        You Need Upgrade To Premium for enjoy Favorite Feature
+                        <span className="text-yellow-600 fw-bold"> *</span>
+                      </h1>
+                  )}
                 </li>
               </ul>
             </nav>
@@ -82,10 +117,22 @@ const Navbar = () => {
             id="nav-content"
           >
             <div className="auth flex items-center w-full md:w-full">
-              <button className="bg-blue-500 text-white p-2 rounded border border-gray-300 mr-4 hover:bg-yellow-300 hover:text-gray-100">
-                Upgrade
-                {/* <span className="text-yellow-400 fw-bold hover:bg"> *</span> */}
-              </button>
+              {localStorage.status === "Premium" ? (
+                <button
+                  hidden
+                  onClick={handleUpgrade}
+                  className="bg-blue-500 text-white p-2 rounded border border-gray-300 mr-4 hover:bg-yellow-300 hover:text-gray-100"
+                >
+                  Upgrade
+                </button>
+              ) : (
+                <button
+                  onClick={handleUpgrade}
+                  className="bg-blue-500 text-white p-2 rounded border border-gray-300 mr-4 hover:bg-yellow-300 hover:text-gray-100"
+                >
+                  Upgrade
+                </button>
+              )}
               {localStorage.access_token ? (
                 <button
                   onClick={handleLogout}

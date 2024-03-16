@@ -6,7 +6,6 @@ import Swal from "sweetalert2";
 
 const Favorite = () => {
   const [anime, setAnime] = useState(null);
-  const [open, setOpen] = useState(false)
 
   async function fetchData() {
     try {
@@ -23,7 +22,7 @@ const Favorite = () => {
       console.log(error);
     }
   }
-  
+
   const deleteData = async (id) => {
     try {
       await axios({
@@ -73,15 +72,6 @@ const Favorite = () => {
                     All anime in your favorite list
                   </span>
                 </h3>
-                <div className="relative flex flex-wrap items-center my-2">
-                  <a
-                    href="javascript:void(0)"
-                    className="inline-block text-[.925rem] font-medium leading-normal text-center align-middle cursor-pointer rounded-2xl transition-colors duration-150 ease-in-out text-light-inverse bg-light-dark border-light shadow-none border-0 py-2 px-5 hover:bg-secondary active:bg-light focus:bg-light"
-                  >
-                    {" "}
-                    See other projects{" "}
-                  </a>
-                </div>
               </div>
               <div className="flex-auto block py-8 pt-6 px-9">
                 <div className="overflow-x-auto">
@@ -167,14 +157,18 @@ const Favorite = () => {
                               </h1>
                             </td>
                             <td className="p-3 pr-12 text-end">
+                              <Link to={`/edit-fav/${item.Anime.id}`}>
+                                <button
+                                  // onClick={handleLogout}
+                                  className="bg-yellow-400 text-gray-200 border border-gray-300 p-2 mr-2 rounded-xl hover:bg-yellow-600 hover:text-gray-100"
+                                >
+                                  Edit
+                                </button>
+                              </Link>
                               <button
-                                onClick={() => {}}
-                                className="bg-yellow-400 text-gray-200 border border-gray-300 p-2 mr-2 rounded-xl hover:bg-yellow-600 hover:text-gray-100"
-                              >
-                                Edit
-                              </button>
-                              <button
-                                onClick={() => {deleteData(item.id)}}
+                                onClick={() => {
+                                  deleteData(item.Anime.id);
+                                }}
                                 className="bg-red-600 text-gray-200 border border-gray-300 p-2 rounded-xl hover:bg-red-800 hover:text-gray-100"
                               >
                                 Delete

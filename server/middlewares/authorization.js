@@ -4,7 +4,7 @@ const authorization = async (req, res, next) => {
     if (req.user.status === "Premium") {
       next();
     } else {
-      throw { name: "Forbidden" };
+      throw { name: "ForbiddenStatus" };
     }
   } catch (error) {
     console.log(error);

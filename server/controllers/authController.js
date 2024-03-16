@@ -29,7 +29,8 @@ class ControllerAuth {
 
       const payload = { id: user.id };
       const token = signToken(payload);
-      res.status(200).json({ message: "Success Login", token, user });
+      const status = user.status
+      res.status(200).json({ message: "Success Login", token, user, status });
     } catch (error) {
       console.log(error);
       next(error);
@@ -47,6 +48,8 @@ class ControllerAuth {
         audience:
           "69395850274-8h7op1snhdk96ebh6l9r9np01v31lp7v.apps.googleusercontent.com",
       });
+      if (!ticket) throw { name: "InvalidLogin" };
+
       console.log(ticket, "<<<>>>> TIKET");
       const { email, name } = ticket.getPayload();
       const [user, created] = await User.findOrCreate({
@@ -57,10 +60,11 @@ class ControllerAuth {
           password: Math.random().toString(),
         },
       });
-      console.log(user, created, "<<<< INI DI SERVER");
       const payload = { id: user.id };
       const token = signToken(payload);
-      res.status(200).json({ message: `Success Logged in as ${email}`, token, name });
+      const status = user.status
+      // console.log(status, "<<<< INI DI SERVER");
+      res.status(200).json({ message: `Success Logged in as ${email}`, token, status, name});
     } catch (error) {
       console.log(error);
       next(error);

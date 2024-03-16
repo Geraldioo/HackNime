@@ -71,6 +71,7 @@ function LoginPage() {
       console.log(data, "<<<<<< ?????");
       localStorage.access_token = data.token;
       localStorage.name = data.name;
+      localStorage.status = data.status;
 
       navigate("/");
 

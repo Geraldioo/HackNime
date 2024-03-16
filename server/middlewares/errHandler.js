@@ -41,6 +41,9 @@ const errHandler = (err, req, res, next) => {
     case "Forbidden":
       res.status(403).json({ message: "Forbidden Access" });
       break;
+    case "ForbiddenStatus":
+      res.status(403).json({ message: "You Must Upgrade Premium" });
+      break;
     default:
       console.log(err);
       res.status(500).json({ message: "Internal Server Error" });
