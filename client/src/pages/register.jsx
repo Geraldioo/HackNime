@@ -59,7 +59,7 @@ const Register = () => {
           className="lg:flex w-1/2 hidden bg-gray-500 bg-no-repeat bg-cover relative items-center"
           style={{
             backgroundImage:
-              "url(https://images.unsplash.com/photo-1577495508048-b635879837f1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80)",
+              "url(https://getwallpapers.com/wallpaper/full/2/a/a/655586.jpg)",
           }}
         >
           <div className="absolute bg-black opacity-60 inset-0 z-0" />
@@ -80,7 +80,7 @@ const Register = () => {
             className="absolute lg:hidden z-10 inset-0 bg-gray-500 bg-no-repeat bg-cover items-center"
             style={{
               backgroundImage:
-                "url(https://images.unsplash.com/photo-1577495508048-b635879837f1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80)",
+                "url(https://getwallpapers.com/wallpaper/full/9/0/d/655491.jpg)",
             }}
           >
             <div className="absolute bg-black opacity-60 inset-0 z-0" />

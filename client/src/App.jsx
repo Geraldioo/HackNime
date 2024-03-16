@@ -12,6 +12,8 @@ import DetailPage from "./pages/detail";
 import MainLayout from "./components/mainLayout";
 import Favorite from "./pages/favorit";
 import EditPage from "./pages/editFav";
+import { store } from "./store";
+import { Provider } from "react-redux";
 
 const router = createBrowserRouter([
   {
@@ -33,7 +35,7 @@ const router = createBrowserRouter([
       },
       {
         path: "edit-fav/:id",
-        element: <EditPage />
+        element: <EditPage />,
       },
     ],
   },
@@ -65,7 +67,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </>
   );
 }
