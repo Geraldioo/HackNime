@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import BASE_URL from "../constant";
 import { Link } from "react-router-dom";
 
+
 function LoginPage() {
   const navigate = useNavigate();
 

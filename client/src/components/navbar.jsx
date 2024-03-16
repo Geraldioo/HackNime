@@ -1,7 +1,13 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 const Navbar = () => {
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   const handleLogout = (event) => {
     event.preventDefault();
@@ -19,7 +25,7 @@ const Navbar = () => {
     <>
       <div
         id="header"
-        className="w-full z-30 sticky top-0 bg-slate-600 shadow-lg"
+        className="w-full z-30 sticky top-0 bg-slate-600 shadow-lg md:relative md:top-0 md:py-2"
       >
         <div className="w-full flex items-center justify-between mt-0 px-6 py-2">
           <label
@@ -32,22 +38,25 @@ const Navbar = () => {
               width={20}
               height={20}
               viewBox="0 0 20 20"
+              onClick={toggleMenu}
             >
               <title>menu</title>
               <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
             </svg>
           </label>
           <div
-            className="hidden md:flex md:items-center md:w-auto w-full order-3 md:order-1"
+            className={`${
+              isMenuOpen ? "block" : "hidden"
+            } md:flex md:items-center md:w-auto w-full md:order-1`}
             id="menu"
           >
             <nav>
-              <ul className="md:flex items-center justify-between text-base text-white pt-4 md:pt-0">
+              <ul className="md:flex items-center justify-start text-base text-white pt-4 md:pt-4">
                 <li>
                   <img
                     src="/hck-logo.png"
                     alt="logo"
-                    className="py-1 px-4 lg:-ml-2 w-28"
+                    className="py-1 px-4 lg:-ml-2 w-32" 
                   />
                 </li>
                 <li>
@@ -58,12 +67,12 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li>
-                  <a
-                    className="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"
-                    href="#"
-                  >
-                    My Favorite<span className="text-red-600 fw-bold"> *</span>
-                  </a>
+                  <Link to={"/favorite"}>
+                    <button className="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2">
+                      My Favorite
+                      <span className="text-red-600 fw-bold"> *</span>
+                    </button>
+                  </Link>
                 </li>
               </ul>
             </nav>
@@ -73,8 +82,9 @@ const Navbar = () => {
             id="nav-content"
           >
             <div className="auth flex items-center w-full md:w-full">
-              <button className="bg-blue-500 text-white  p-2 rounded border border-gray-300 mr-4 hover:bg-blue-800 hover:text-gray-100">
-                Upgrade<span className="text-yellow-400 fw-bold hover:bg"> *</span>
+              <button className="bg-blue-500 text-white p-2 rounded border border-gray-300 mr-4 hover:bg-yellow-300 hover:text-gray-100">
+                Upgrade
+                {/* <span className="text-yellow-400 fw-bold hover:bg"> *</span> */}
               </button>
               {localStorage.access_token ? (
                 <button

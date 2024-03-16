@@ -10,6 +10,7 @@ import Register from "./pages/register";
 import HomePage from "./pages/home";
 import DetailPage from "./pages/detail";
 import MainLayout from "./components/mainLayout";
+import Favorite from "./pages/favorit";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
         path: "/anime/:id",
         element: <DetailPage />,
       },
+      {
+        path: "/favorite",
+        element: <Favorite />
+      }
     ],
   },
   {
@@ -55,7 +60,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
+        <RouterProvider router={router} />
     </>
   );
 }
