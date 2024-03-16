@@ -40,3 +40,8 @@ org.jkiss.dbeaver.model.exec.DBCException: Array type varchar doesn't have a com
 
 
 npx sequelize-cli model:generate --name Order --attributes UserId:integer,OrderId:string,amount:integer,paidDate:date,status:string
+
+
+
+
+
