@@ -4,7 +4,7 @@ const errHandler = (err, req, res, next) => {
       res.status(400).json({ message: err.errors[0].message });
       break;
     case "SequelizeUniqueConstraintError":
-      res.status(400).json({ message: "Email Already Exist" });
+      res.status(400).json({ message: "Email Already Registered" });
       break;
     case "AnimeAdded":
       res

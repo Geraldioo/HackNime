@@ -37,6 +37,7 @@ function LoginPage() {
       console.log(data, "INI DATA");
       localStorage.access_token = data.token;
       localStorage.username = data.user.username;
+      localStorage.status = data.status;
 
       navigate("/");
 

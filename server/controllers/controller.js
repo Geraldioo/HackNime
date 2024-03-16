@@ -235,6 +235,7 @@ class Controller {
         UserId: req.user.id,
       });
 
+      console.log(transactionToken,OrderId, "<<<< MIDTRANS");
       res
         .status(200)
         .json({ message: "Order Created", transactionToken, OrderId });
