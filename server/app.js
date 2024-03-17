@@ -22,7 +22,7 @@ module.exports = app;
 //   apps: [
 //     {
 //       name: "Hacknime",
-//       script: "./app.js",
+//       script: "./bin/www",
 //       env: {
 //         SECRET_JWT: "kzhayin",
 //         PORT: 80,
