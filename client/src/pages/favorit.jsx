@@ -167,7 +167,8 @@ const Favorite = () => {
                               </Link>
                               <button
                                 onClick={() => {
-                                  deleteData(item.Anime.id);
+                                    // {console.log(item.Anime.id, "<<<<<<>>>>>>???");}
+                                  deleteData(item.id);
                                 }}
                                 className="bg-red-600 text-gray-200 border border-gray-300 p-2 rounded-xl hover:bg-red-800 hover:text-gray-100"
                               >

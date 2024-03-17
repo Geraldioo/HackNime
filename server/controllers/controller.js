@@ -169,7 +169,12 @@ class Controller {
   static async deleteFav(req, res, next) {
     try {
       const { animeId } = req.params;
-
+      console.log(animeId, "<<<<<<");
+      // const findFav = await Favorite.findOne({
+      //   where: {
+      //     AnimeId: animeId
+      //   }
+      // });
       const findFav = await Favorite.findByPk(animeId);
       if (!findFav) {
         throw {
