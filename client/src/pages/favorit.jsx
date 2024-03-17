@@ -3,25 +3,15 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../constant";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchFav } from "../feature/anime/favSlice";
 
 const Favorite = () => {
-  const [anime, setAnime] = useState(null);
+//   const [favorite, setFavorite] = useState(null);
+  const dispatch = useDispatch();
+  const favorites = useSelector((state) => state.favorites.list);
 
-  async function fetchData() {
-    try {
-      const { data } = await axios({
-        method: "GET",
-        url: `${BASE_URL}/favorite`,
-        headers: {
-          Authorization: "Bearer " + localStorage.access_token,
-        },
-      });
-      //   console.log(data, "<<<<");
-      setAnime(data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+
 
   const deleteData = async (id) => {
     try {
@@ -33,9 +23,9 @@ const Favorite = () => {
         },
       });
 
-      fetchData();
+      dispatch(fetchFav())
 
-      anime.map((el) => {
+      favorites.map((el) => {
         Swal.fire({
           title: `${el.Anime.title} Deleted From Your Favorites`,
           icon: "success",
@@ -49,7 +39,7 @@ const Favorite = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    dispatch(fetchFav())
   }, []);
 
   return (
@@ -97,8 +87,8 @@ const Favorite = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {anime &&
-                        anime.map((item) => (
+                      {favorites &&
+                        favorites.map((item) => (
                           <tr className="border-b border-dashed last:border-b-0">
                             <td className="p-3 pl-0">
                               <div className="flex items-center">
@@ -167,7 +157,7 @@ const Favorite = () => {
                               </Link>
                               <button
                                 onClick={() => {
-                                    // {console.log(item.Anime.id, "<<<<<<>>>>>>???");}
+                                  // {console.log(item.Anime.id, "<<<<<<>>>>>>???");}
                                   deleteData(item.id);
                                 }}
                                 className="bg-red-600 text-gray-200 border border-gray-300 p-2 rounded-xl hover:bg-red-800 hover:text-gray-100"
