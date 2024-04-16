@@ -1,0 +1,19 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "171071",
+    "database": "Ind_Project_db",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "171071",
+    "database": "Ind_Project_db_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL"
+  }
+}
